@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="baseLayout" template="/WEB-INF/tiles/template/baseLayout.jsp">
+		<put-attribute name="title" value="MUM Scrum" />
+ 		<put-attribute name="header" value="/WEB-INF/tiles/template/header.jsp" cascade="true" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/template/footer.jsp" />
+		<put-attribute name="active" value="index" cascade="true"/>
+	</definition>
+	
+	
+	<definition name="welcome" extends="baseLayout">
+		<put-attribute name="title" value="Welcome to MUM Scrum" />
+		<put-attribute name="body" value="/WEB-INF/view/welcome.jsp" />
+	</definition>
+	
+	<!-- Employee -->
+	<definition name="updateProfile" extends="baseLayout">
+		<put-attribute name="title" value="Update Profile" />
+		<put-attribute name="body" value="/WEB-INF/view/updateProfile.jsp" />
+	</definition>
+	
+	<definition name="listEmployee" extends="baseLayout">
+		<put-attribute name="title" value="List Employee" />
+		<put-attribute name="body" value="/WEB-INF/view/listEmployee.jsp" />
+	</definition>
+	
+	<definition name="createEmployee" extends="baseLayout">
+		<put-attribute name="title" value="Create Employee" />
+		<put-attribute name="body" value="/WEB-INF/view/createEmployee.jsp" />
+	</definition>
+	
+	<definition name="readEmployee" extends="baseLayout">
+		<put-attribute name="title" value="Read Employee" />
+		<put-attribute name="body" value="/WEB-INF/view/readEmployee.jsp" />
+	</definition>
+	
+	<!-- User Story -->
+	<definition name="listUserStory" extends="baseLayout">
+		<put-attribute name="title" value="List UserStory" />
+		<put-attribute name="body" value="/WEB-INF/view/listUserStory.jsp" />
+	</definition>
+	
+	<definition name="addUserStory" extends="baseLayout">
+		<put-attribute name="title" value="Add UserStory" />
+		<put-attribute name="body" value="/WEB-INF/view/addUserStory.jsp" />
+	</definition>
+	
+	<!-- Release -->
+	<definition name="addRelease" extends="baseLayout">
+		<put-attribute name="title" value="Add Release" />
+		<put-attribute name="body" value="/WEB-INF/view/addRelease.jsp" />
+	</definition>
+	
+	<definition name="listRelease" extends="baseLayout">
+		<put-attribute name="title" value="Add Release" />
+		<put-attribute name="body" value="/WEB-INF/view/listRelease.jsp" />
+	</definition>
+	
+	<!-- Worklog -->
+	<definition name="updateEffort" extends="baseLayout">
+		<put-attribute name="title" value="Update Effort" />
+		<put-attribute name="body" value="/WEB-INF/view/updateEffort.jsp" />
+	</definition>
+	
+	<!-- Sprint -->
+	<definition name="addSprint" extends="baseLayout">
+		<put-attribute name="title" value="Add Sprint" />
+		<put-attribute name="body" value="/WEB-INF/view/addSprint.jsp" />
+	</definition>
+	
+	<definition name="listSprint" extends="baseLayout">
+		<put-attribute name="title" value="List Sprint" />
+		<put-attribute name="body" value="/WEB-INF/view/listSprint.jsp" />
+	</definition>
+	
+	<!-- Effort -->
+	<definition name="estimateEffort" extends="baseLayout">
+		<put-attribute name="title" value="Estimate Effort" />
+		<put-attribute name="body" value="/WEB-INF/view/estimateEffort.jsp" />
+	</definition>
+	
+	<definition name="calculateEffort" extends="baseLayout">
+		<put-attribute name="title" value="Calculate Effort" />
+		<put-attribute name="body" value="/WEB-INF/view/calculateEffort.jsp" />
+	</definition>
+	
+	<!-- BurnDownChart -->
+	<definition name="burnDownPage" extends="baseLayout">
+		<put-attribute name="title" value="BurndownChart" />
+		<put-attribute name="body" value="/WEB-INF/view/burnDownPage.jsp" />
+	</definition>
+	
+	<!-- accessDenied -->
+	<definition name="accessDenied" extends="baseLayout">
+		<put-attribute name="title" value="BurndownChart" />
+		<put-attribute name="body" value="/WEB-INF/view/accessDenied.jsp" />
+	</definition>
+	
+
+</tiles-definitions>

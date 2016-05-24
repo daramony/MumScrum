@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+<!-- enable Method level [vs URL level] authorization  This work for APPLICATION Level scanned components
+      Does NOT recognize WEB level components - for THAT  need to place enable line in Dispatcher-servlet-->
+	<security:global-method-security pre-post-annotations="enabled"/>	
+	<!--  Use ControllerAdice for Access denied -->	
+<!-- security:http enables security filter mechanism...name space configuration is activated -->
+<!-- use-expressions enables URL level authorization -->
+		<security:http use-expressions="true">
+	 <!-- <security:http auto-config="true" use-expressions="true"> -->
+	
+	<!-- Need to redirect exception for web authorization -->
+	<security:access-denied-handler error-page="/error-forbidden" />
+	
+	<!-- Implemented with Web based URL - Controller "METHOD" level authorization -->
+	<!-- the more specific rules need to come first, followed by the more general ones. -->
+	<!-- COMmENT out the following to see @Service METHOD level authorization -->
+	  <security:intercept-url pattern="/employee/*" access="hasRole('ROLE_HRAdmin')" />
+	  <security:intercept-url pattern="/update-profile" access="hasAnyRole('ROLE_HRAdmin', 'ROLE_ScrumMaster', 'ROLE_Developer', 'ROLE_Tester')" />
+	  <security:intercept-url pattern="/welcome" access="hasAnyRole('ROLE_HRAdmin', 'ROLE_ScrumMaster', 'ROLE_Developer', 'ROLE_Tester')" />
+	  
+	  <!-- Release -->
+	  <security:intercept-url pattern="/listRelease" access="hasRole('ROLE_ScrumMaster')" />
+	  <security:intercept-url pattern="/addRelease" access="hasRole('ROLE_ScrumMaster')" />
+	  <security:intercept-url pattern="/editRelease/*" access="hasRole('ROLE_ScrumMaster')" />
+	  <security:intercept-url pattern="/deleteRelease/*" access="hasRole('ROLE_ScrumMaster')" />
+	  
+	  <!-- Sprint -->
+		<security:intercept-url pattern="/listSprint" access="hasRole('ROLE_ScrumMaster')" />
+		<security:intercept-url pattern="/addSprint" access="hasRole('ROLE_ScrumMaster')" />
+		<security:intercept-url pattern="/editSprint/*" access="hasRole('ROLE_ScrumMaster')" />
+		<security:intercept-url pattern="/editSprint/*" access="hasRole('ROLE_ScrumMaster')" />
+		
+		<!-- BurndownChart -->
+		<security:intercept-url pattern="/generateBD/*" access="hasAnyRole('ROLE_HRAdmin', 'ROLE_ScrumMaster', 'ROLE_Developer', 'ROLE_Tester')" />
+		
+		<!-- UserStory -->
+		<security:intercept-url pattern="/addUserStory" access="hasRole('ROLE_ScrumMaster')" />
+		<security:intercept-url pattern="/editUserStory/*" access="hasRole('ROLE_ScrumMaster')" />
+		<security:intercept-url pattern="/deleteUserStory/*" access="hasRole('ROLE_ScrumMaster')" />
+		<security:intercept-url pattern="/listUserStory" access="hasRole('ROLE_ScrumMaster')" />
+		
+		
+		<!-- Effort -->
+		<!-- <security:intercept-url pattern="/listUserStory" access="hasRole('ROLE_Developer')" />
+		<security:intercept-url pattern="/listUserStory" access="hasRole('ROLE_Developer')" />
+		<security:intercept-url pattern="/listUserStory" access="hasRole('ROLE_Tester')" />
+		<security:intercept-url pattern="/listUserStory" access="hasRole('ROLE_Tester')" /> -->
+		
+		<!-- always-use-default-target overrides where login was triggered -->
+		<!-- logout-url renames j_security_logout URL -->
+		<!-- similarly username,password,Login-processing  renames j_security_* stuff -->
+		<!-- e.g., /j_spring_security_check is default login-processing-url-->
+<!-- Comment out login-page through logoinfailed for BASIC -->
+ 		<security:form-login  login-page="/login" 
+				login-processing-url="/j_spring_security_check"
+				username-parameter="userId" 
+				password-parameter="password"
+ 			    default-target-url="/welcome"    
+               always-use-default-target="true"   
+               authentication-failure-url="/login"/>
+         <security:logout logout-success-url="/logout"  logout-url= "/doLogout"/>
+        
+		<!-- BY DEFAULT the URL /j_spring_security_logout triggers logout 
+		NOTE: is it JUST a URL naming convention - no mapping is required
+				logout-url= "/doLogout" REPLACES it -->
+				<security:csrf disabled="true"/>
+	</security:http>
+	
+
+ 	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service
+				data-source-ref="dataSource"
+				users-by-username-query="select userId,password,enabled from Employee where userId=?"
+				authorities-by-username-query="select e.userId, r.roleName as role from Employee e, EmployeeRole r where e.id=r.employee_id and e.userId=?" />
+		</security:authentication-provider>
+	</security:authentication-manager>	
+	
+	
+ 	<!-- <security:authentication-manager>
+		<security:authentication-provider>
+		  <security:user-service>
+			<security:user name="mkyong" password="123456" authorities="ROLE_USER" />
+		  </security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager> -->
+
+
+<!--  	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="admin" password="admin" authorities="ROLE_ADMIN" />
+				<security:user name="guest" password="guest" authorities="ROLE_USER" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager> -->
+</beans>
